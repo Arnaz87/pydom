@@ -1,8 +1,21 @@
 import dom
+import css
+import style
 
+html_text = '''
+<span class="rojo"><a>enlace</a>rojo</span>
+<span class="azul">azul</span>
+<span id="cosa">COSA!!</span>
+<p>Parrafo con <a>un enlace</a></p>
+'''
 
-p = dom.Parser('Documento de prueba<span id="nombre">Este es un span y tiene un<span color="red">Rojo</span></span> y al final no tiene nada.')
+css_text = '''
+p {color:black;}
+a {sub:true;}
+span.rojo {color:rojo;}
+.azul{color:azul;}
+#cosa{unique:true;}
+'''
 
-print p.input
-print "\n"
-dom.print_nodes(p.parse_nodes())
+dom_tree = dom.parse(html_text)
+css_tree = css.parse(css_text)

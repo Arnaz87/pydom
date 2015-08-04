@@ -11,13 +11,22 @@ class ElementNode(Node):
     self.tag_name = tag
     self.attributes = attrs
     self.children = children
-  def print_node(self, indent):
+  def id(self):
+    return self.attributes.get("id", None)
+  def classes(self):
+    attr = self.attributes.get("class", None)
+    if attr:
+      return attr.split(" ")
+    return []
+  def display(self):
+    return self.attributes.get("display", "none")
+  def print_node(self, indent = 0):
     space = " " * indent_spaces * indent
     space_d = " " * (indent_spaces * (indent + 1))
     print space + "<" + self.tag_name + ">"
     for key in self.attributes:
-      print space_d + key + "=" + self.attributes[key]
-    print space_d + "children :"
+      print space_d + key + ":" + self.attributes[key]
+    print space_d + "children: ->"
     for node in self.children:
       node.print_node(indent + 2)
 
@@ -25,9 +34,16 @@ class ElementNode(Node):
 class TextNode(Node):
   def __init__(self, text = ""):
     self.text = text
+  def is_empty(self):
+    if len(self.text) == 0:
+      return True
+    for c in self.text:
+      if c not in (" ", "\n", "\t", "\r"):
+        return False
+    return True
   def print_node(self, indent):
     space = " " * indent_spaces * indent
-    print space + "TEXT:" + self.text
+    print space + "<TEXT>:" + self.text
 
 
 class Parser(shared.Parser):
@@ -35,6 +51,7 @@ class Parser(shared.Parser):
     return self.consume_pattern("[a-zA-Z0-9]")
 
   def parse_text_node(self):
+    self.consume_space()
     return TextNode( self.consume_while(lambda c: c != "<") )
 
   def parse_open_tag(self):
@@ -90,14 +107,19 @@ class Parser(shared.Parser):
   def parse_node(self):
     if self.char() == "<":
       return self.parse_element_node()
-    return self.parse_text_node()
+    node = self.parse_text_node()
+    if not node.is_empty():
+      return node
+    return None
 
   def parse_nodes(self):
     nodes = []
     while True:
       if self.eof() or self.starts_with("</"):
         break
-      nodes.append(self.parse_node())
+      node = self.parse_node()
+      if node:
+        nodes.append(node)
     return nodes
 
 def print_nodes(nodes, indent = 0):
@@ -106,4 +128,5 @@ def print_nodes(nodes, indent = 0):
 
 def parse(inp):
   parser = Parser(inp)
-  return parser.parse_nodes();
+  children = parser.parse_nodes();
+  return ElementNode("body", [], children)

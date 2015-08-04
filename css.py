@@ -4,6 +4,15 @@ class Rule():
   def __init__(self, sel = [], dec = []):
     self.selectors = sel
     self.declarations = dec
+  def print_rule(self):
+    print "{"
+    for sel in self.selectors:
+      print "  [tag:" + sel.tag_name + "]"
+      print "  [id:" + sel.id + "]"
+      print "  [class:" + sel.class_ + "]"
+    for decl in self.declarations:
+      print "  " + decl.name + ":" + decl.value
+    print "}"
 
 class Selector():
   def __init__(self):
@@ -66,3 +75,6 @@ def parse(inp):
   parser = Parser(inp)
   return parser.parse_rules();
 
+def print_rules(rules):
+  for rule in rules:
+    rule.print_rule()
