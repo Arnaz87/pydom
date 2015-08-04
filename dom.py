@@ -129,4 +129,4 @@ def print_nodes(nodes, indent = 0):
 def parse(inp):
   parser = Parser(inp)
   children = parser.parse_nodes();
-  return ElementNode("body", [], children)
+  return ElementNode("body", {}, children)

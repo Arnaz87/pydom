@@ -19,3 +19,5 @@ span.rojo {color:rojo;}
 
 dom_tree = dom.parse(html_text)
 css_tree = css.parse(css_text)
+
+style_tree = style.get_style_tree(dom_tree, css_tree)

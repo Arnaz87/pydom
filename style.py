@@ -2,11 +2,17 @@ import dom
 import css
 
 class Node():
-  def __init__(self, dom = None, values = []):
+  def __init__(self, dom = None, values = [], children = []):
     self.dom = dom
     self.values = values
+    self.children = children
   def display(self):
     return self.dom.display()
+  def print_node(self, ident = 0):
+    space = "  "*ident
+    print space + "<" + self.dom.tag_name + ">" + str(self.values)
+    for child in self.children:
+      child.print_node(ident+1)
 
 
 def matches_selector(node, selector):
@@ -33,17 +39,13 @@ def get_values(node, rules):
       values[attr.name] = attr.value
   return values
 
-def get_style_tree(nodes, rules):
-  tree = add_style_tree([], nodes, rules)
-  return tree
-
-def add_style_tree(tree, nodes, rules):
-  for node in nodes:
-    if not isinstance(node, dom.ElementNode):
-      continue
-    values = get_values(node, rules)
-    tree.append(Node(node, values))
-    #tree.append(node)
-    if len(node.children) > 0:
-      tree = add_style_tree(tree, node.children, rules)
-  return tree
+def get_style_tree(node, rules):
+  if not isinstance(node, dom.ElementNode):
+    return None
+  values = get_values(node, rules)
+  children = []
+  for child in node.children:
+    ch = get_style_tree(child, rules)
+    if ch:
+      children.append(ch)
+  return Node(node, values, children)
