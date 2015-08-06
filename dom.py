@@ -18,8 +18,6 @@ class ElementNode(Node):
     if attr:
       return attr.split(" ")
     return []
-  def display(self):
-    return self.attributes.get("display", "none")
   def print_node(self, indent = 0):
     space = " " * indent_spaces * indent
     space_d = " " * (indent_spaces * (indent + 1))

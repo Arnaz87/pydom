@@ -24,11 +24,15 @@ class Box():
     self.dimension = Dimension()
     self.children = []
   def get_inline_box(self):
-    if not isinstance(self.children[-1], AnonymousBox):
+    if len(self.children) < 1 or not isinstance(self.children[-1], AnonymousBox):
       self.children.append(AnonymousBox())
     return self.children[-1]
   def add_child(self, child):
-    pass
+    if isinstance(child, BlockBox):
+      self.children.append(child)
+    elif isinstance(child, InlineBox):
+      anon = self.get_inline_box()
+      anon.children.append(child)
 
 
 class BlockBox(Box):
@@ -37,15 +41,17 @@ class BlockBox(Box):
 class InlineBox(Box):
   pass
 
-class AnonymousBox(Box):
+class AnonymousBox(BlockBox):
   pass
 
 def build_layout_tree(node):
   display = node.display()
-  if display == "block":
-    box = BlockBox()
+  if display == "none":
+    return None
   elif display == "inline":
     box = InlineBox()
   else:
-    return
-  
+    box = BlockBox()
+  for child in node.children:
+    box.add_child(build_layout_tree(child))
+  return box
