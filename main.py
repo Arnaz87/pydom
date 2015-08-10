@@ -19,8 +19,8 @@ html_text = '''
 
 css_text = '''
 p {color:black;}
-a {sub:true;display:none;}
-span {display:inline;}
+a {sub:true;display:block;height:20;}
+span {display:block;}
 span.rojo {color:rojo;}
 .azul{color:azul;}
 #cosa{unique:true;}
@@ -33,4 +33,10 @@ style_tree = style.get_style_tree(dom_tree, css_tree)
 
 layout_tree = layout.build_layout_tree(style_tree)
 
-print_tree(layout_tree)
+window = layout.Rect()
+window.width = 200
+window.height = 200
+
+layout_tree.layout_box(window)
+
+layout_tree.print_node()
