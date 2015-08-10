@@ -6,6 +6,8 @@ class Node():
     self.dom = dom
     self.values = values
     self.children = children
+  def get(self, key, value = None):
+    return self.values.get(key, value)
   def display(self):
     return self.values.get("display", "block")
   def print_node(self, ident = 0):

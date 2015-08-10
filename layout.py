@@ -1,3 +1,5 @@
+import re
+
 class Dimension():
   def __init__(self):
     self.content = Rect()
@@ -23,6 +25,7 @@ class Box():
   def __init__(self):
     self.dimension = Dimension()
     self.children = []
+    self.style = None
   def get_inline_box(self):
     if len(self.children) < 1 or not isinstance(self.children[-1], AnonymousBox):
       self.children.append(AnonymousBox())
@@ -34,9 +37,23 @@ class Box():
       anon = self.get_inline_box()
       anon.children.append(child)
 
+def to_px(x):
+  return int(x)
+
 
 class BlockBox(Box):
-  pass
+  def layout_block(self, container):
+    self.calculate_width(container)
+    self.calculate_position(container)
+    self.layout_children()
+    self.calculate_height()
+
+  def calculate_width(self, container):
+    margin = self.style.get("margin", 0)
+    border = self.style.get("border-width", 0)
+    padding = self.style.get("padding", 0)
+
+    minimum = sum(map(lambda x: to_px(x, container), [margin, border, padding]))
 
 class InlineBox(Box):
   pass
@@ -54,4 +71,5 @@ def build_layout_tree(node):
     box = BlockBox()
   for child in node.children:
     box.add_child(build_layout_tree(child))
+  box.style = node
   return box
