@@ -10,20 +10,29 @@ def print_tree(node, ident = 0):
       print_tree(child, ident+1)
 
 html_text = '''
-<span class="rojo"><a>enlace</a>rojo</span>
-<span class="azul">azul</span>
-<span id="cosa">COSA!!</span>
-<p>Parrafo con <a>un enlace</a></p>
-<span>OTRA</span>
+<div>
+  <header></header>
+  <section>
+    <span></span><span></span>
+  </section>
+  <section>
+    <span></span><span></span>
+  </section>
+</div>
+<div>
+<section>
+<span></span>
+</section>
+<span></span>
+</div>
 '''
 
 css_text = '''
-p {color:black;}
-a {sub:true;display:block;height:20;}
-span {display:block;}
-span.rojo {color:rojo;}
-.azul{color:azul;}
-#cosa{unique:true;}
+body {color:gray;}
+div {color:red;padding:5;}
+section {padding:10;color:blue;height:20;}
+span {display:inline;height:20;}
+header {margin:10;color:black;height:30;}
 '''
 
 dom_tree = dom.parse(html_text)

@@ -138,8 +138,8 @@ class BlockBox(Box):
     d.padding.top = to_px(self.style.try_get(["padding_top", "padding"], 0))
     d.padding.bottom = to_px(self.style.try_get(["padding_bottom", "padding"], 0))
 
-    d.x = container.x + d.margin.left + d.border.left + d.padding.left
-    d.y = container.y + container.height + \
+    d.content.x = container.x + d.margin.left + d.border.left + d.padding.left
+    d.content.y = container.y + container.height + \
           d.margin.top + d.border.top + d.padding.top
 
   def layout_children(self):

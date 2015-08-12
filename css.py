@@ -27,7 +27,7 @@ class Declaration():
 
 class Parser(shared.Parser):
   def parse_identifier(self):
-    return self.consume_pattern("[a-zA-Z0-9]")
+    return self.consume_pattern("[a-zA-Z0-9_-]")
 
   def parse_rules(self):
     rules = []
