@@ -4,15 +4,15 @@ class Rule():
   def __init__(self, sel = [], dec = []):
     self.selectors = sel
     self.declarations = dec
-  def print_rule(self):
-    print "{"
+  def print_node(self):
+    print("{")
     for sel in self.selectors:
-      print "  [tag:" + sel.tag_name + "]"
-      print "  [id:" + sel.id + "]"
-      print "  [class:" + sel.class_ + "]"
+      print("  [tag:" + sel.tag_name + "]")
+      print("  [id:" + sel.id + "]")
+      print("  [class:" + sel.class_ + "]")
     for decl in self.declarations:
-      print "  " + decl.name + ":" + decl.value
-    print "}"
+      print("  " + decl.name + ":" + decl.value)
+    print("}")
 
 class Selector():
   def __init__(self):

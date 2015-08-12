@@ -18,7 +18,7 @@ class Node():
     return self.values.get("display", "block")
   def print_node(self, ident = 0):
     space = "  "*ident
-    print space + "<" + self.dom.tag_name + ">" + str(self.values)
+    print(space + "<" + self.dom.tag_name + ">" + str(self.values))
     for child in self.children:
       child.print_node(ident+1)
 

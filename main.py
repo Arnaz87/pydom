@@ -2,12 +2,17 @@ import dom
 import css
 import style
 import layout
+import draw
 
 def print_tree(node, ident = 0):
-  print "  "*ident + node.__class__.__name__
+  print("  " * ident + node.__class__.__name__)
   if hasattr(node, 'children'):
     for child in node.children:
       print_tree(child, ident+1)
+
+def print_list(lst):
+  for node in lst:
+    node.print_node()
 
 html_text = '''
 <div>
@@ -48,4 +53,7 @@ window.height = 200
 
 layout_tree.layout_box(window)
 
-layout_tree.print_node()
+#layout_tree.print_node()
+
+dl = draw.get_draw_list(layout_tree)
+print_list(dl)

@@ -6,6 +6,12 @@ class Dimension():
     self.padding = Edge()
     self.border = Edge()
     self.margin = Edge()
+  def get_margin_rect(self):
+    r = self.content.clone()
+    r.add_edge(self.padding)
+    r.add_edge(self.border)
+    r.add_edge(self.margin)
+    return r
   def get_height(self):
     return self.content.height + self.margin.get_height() + \
            self.border.get_height() + self.padding.get_height()
@@ -16,9 +22,47 @@ class Rect():
     self.y = 0
     self.width = 0 # width
     self.height = 0 # height
+  def add_edge(self, edge):
+    self.x -= edge.left
+    self.y -= edge.top
+    self.width += edge.left + edge.right
+    self.height += edge.top + edge.bottom
+    pass
+  def clone(self):
+    r = Rect()
+    r.x = self.x
+    r.y = self.y
+    r.width = self.width
+    r.height = self.height
+    return r
   def get_string(self):
     return "x:" + str(self.x) + ", y:" + str(self.y) + ", w:" + \
            str(self.width) + ", h:" + str(self.height)
+
+class Color():
+  def __init__(self):
+    self.r = 1
+    self.g = 1
+    self.b = 1
+    self.a = 1
+  def by_name(self, name):
+    if name == "red":
+      self.set(1,0,0)
+    elif name == "green":
+      self.set(0,1,0)
+    elif name == "blue":
+      self.set(0,0,1)
+    elif name == "white":
+      self.set(1,1,1)
+    elif name == "black":
+      self.set(0,0,0)
+    elif name == "transparent":
+      self.set(0,0,0,0)
+  def set(self, r, g, b, a = 1):
+    self.r = r
+    self.g = g
+    self.b = b
+    self.a = a
 
 class Edge():
   def __init__(self):
@@ -57,13 +101,15 @@ class Box():
     pass
   def print_node(self, ident = 0):
     space = "  " * ident
-    print space + self.__class__.__name__
+    print(space + self.__class__.__name__)
     space = "  " * (ident + 1)
-    print space + self.dimension.content.get_string()
-    print space + "margin = " + self.dimension.margin.get_string()
-    print space + "border = " + self.dimension.border.get_string()
-    print space + "padding = " + self.dimension.padding.get_string()
-    print space + "children:"
+    if self.style == None:
+      print(space + "WARNING: NO STYLE!!!")
+    print(space + self.dimension.content.get_string())
+    print(space + "margin = " + self.dimension.margin.get_string())
+    print(space + "border = " + self.dimension.border.get_string())
+    print(space + "padding = " + self.dimension.padding.get_string())
+    print(space + "children:")
     for child in self.children:
       child.print_node(ident + 2)
 

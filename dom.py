@@ -21,10 +21,10 @@ class ElementNode(Node):
   def print_node(self, indent = 0):
     space = " " * indent_spaces * indent
     space_d = " " * (indent_spaces * (indent + 1))
-    print space + "<" + self.tag_name + ">"
+    print(space + "<" + self.tag_name + ">")
     for key in self.attributes:
-      print space_d + key + ":" + self.attributes[key]
-    print space_d + "children: ->"
+      print(space_d + key + ":" + self.attributes[key])
+    print(space_d + "children: ->")
     for node in self.children:
       node.print_node(indent + 2)
 
@@ -41,7 +41,7 @@ class TextNode(Node):
     return True
   def print_node(self, indent):
     space = " " * indent_spaces * indent
-    print space + "<TEXT>:" + self.text
+    print(space + "<TEXT>:" + self.text)
 
 
 class Parser(shared.Parser):
