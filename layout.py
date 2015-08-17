@@ -196,7 +196,7 @@ class BlockBox(Box):
   def calculate_height(self):
     height = self.style.get("height", "auto")
     if height != "auto":
-      self.dimension.height = to_px(height)
+      self.dimension.content.height = to_px(height)
 
 
 class InlineBox(Box):
