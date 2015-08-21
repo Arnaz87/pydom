@@ -6,6 +6,15 @@ class Dimension():
     self.padding = Edge()
     self.border = Edge()
     self.margin = Edge()
+  def get_padding_rect(self):
+    r = self.content.clone()
+    r.add_edge(self.padding)
+    return r
+  def get_border_rect(self):
+    r = self.content.clone()
+    r.add_edge(self.padding)
+    r.add_edge(self.border)
+    return r
   def get_margin_rect(self):
     r = self.content.clone()
     r.add_edge(self.padding)
@@ -28,6 +37,10 @@ class Rect():
     self.width += edge.left + edge.right
     self.height += edge.top + edge.bottom
     pass
+  def get_right(self):
+    return self.x + self.width
+  def get_bottom(self):
+    return self.y + self.height
   def clone(self):
     r = Rect()
     r.x = self.x
@@ -39,37 +52,14 @@ class Rect():
     return "x:" + str(self.x) + ", y:" + str(self.y) + ", w:" + \
            str(self.width) + ", h:" + str(self.height)
 
-class Color():
-  def __init__(self):
-    self.r = 1
-    self.g = 1
-    self.b = 1
-    self.a = 1
-  def by_name(self, name):
-    if name == "red":
-      self.set(1,0,0)
-    elif name == "green":
-      self.set(0,1,0)
-    elif name == "blue":
-      self.set(0,0,1)
-    elif name == "white":
-      self.set(1,1,1)
-    elif name == "black":
-      self.set(0,0,0)
-    elif name == "transparent":
-      self.set(0,0,0,0)
-  def set(self, r, g, b, a = 1):
-    self.r = r
-    self.g = g
-    self.b = b
-    self.a = a
-
 class Edge():
   def __init__(self):
     self.left = 0
     self.right = 0
     self.top = 0
     self.bottom = 0
+  def max(self):
+    return max(self.left, self.right, self.top, self.bottom)
   def set_all(self, x):
     self.left = x
     self.right = x
@@ -99,6 +89,9 @@ class Box():
   # Container es una instancia de Rect
   def layout_box(self, container):
     pass
+  def has_borders(self):
+    return self.dimension.border.max() > 0
+
   def print_node(self, ident = 0):
     space = "  " * ident
     print(space + self.__class__.__name__)
