@@ -34,9 +34,9 @@ html_text = '''
 '''
 
 css_text = '''
-body {color:white;}
-div {color:red;padding:5;border:1;}
-section {padding:10;color:blue;height:20;border:1;}
+body {bg-color:white;}
+div {bg-color:yellow;padding:5;border:1;}
+section {padding:10;bg-color:cyan;height:20;border:1;}
 span {display:inline;height:20;border:1;}
 header {margin:10;color:black;height:30;border:1;}
 '''

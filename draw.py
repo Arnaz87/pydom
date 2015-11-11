@@ -13,6 +13,8 @@ class Color():
         self.set_by_values(arg1, arg2, arg3, arg4)
     else: # Sin ningun argumento
       self.set_by_values(0,0,0,1)
+  def set_by_code(self, arg):
+    pass
   def set_by_name(self, arg):
     if arg == "red":
       self.set_by_values(1,0,0)
@@ -20,10 +22,20 @@ class Color():
       self.set_by_values(0,1,0)
     elif arg == "blue":
       self.set_by_values(0,0,1)
+    elif arg == "cyan":
+      self.set_by_values(0,1,1)
+    elif arg == "magenta":
+      self.set_by_values(1,0,1)
+    elif arg == "yellow":
+      self.set_by_values(1,1,0)
     elif arg == "gray":
       self.set_by_values(0.5,0.5,0.5)
     elif arg == "black":
       self.set_by_values(0,0,0)
+    elif arg == "dark":
+      self.set_by_values(0,0,0,0.5)
+    elif arg == "light":
+      self.set_by_values(1,1,1,0.5)
     else:
       self.set_by_values(1,1,1)
   def set_by_values(self, r, g, b, a = None):
@@ -33,6 +45,8 @@ class Color():
     self.g = g
     self.b = b
     self.a = a
+  def set_source(self, cr):
+    cr.set_source_rgba(self.r, self.g, self.b, self.a)
 
 
 class BlockDraw(DrawCommand):
@@ -43,24 +57,15 @@ class BlockDraw(DrawCommand):
     self.y = bg.y
     self.w = bg.width
     self.h = bg.height
-    color = node.style.get("color")
-    self.set_color(Color(color))
-  def set_color(self, c):
-    self.color = c
-    self.r = c.r
-    self.g = c.g
-    self.b = c.b
-    self.a = c.a
+    self.color = Color(node.style.get("bg-color", "white"))
   def draw(self, cr):
-    if self.a == 0:
-      return
-    cr.set_source_rgba(self.r, self.g, self.b, self.a)
+    self.color.set_source(cr)
     cr.rectangle(self.x, self.y, self.w, self.h)
     cr.fill()
   def print_node(self):
     print("draw_rect:")
-    print("  r:" + str(self.r) + ", g:" + str(self.g) + \
-          ", b:" + str(self.b) + ", a:" + str(self.a))
+    print("  r:" + str(self.color.r) + ", g:" + str(self.color.g) + \
+          ", b:" + str(self.color.b) + ", a:" + str(self.color.a))
     print("  x:" + str(self.x) + ", y:" + str(self.y) + \
           ", w:" + str(self.w) + ", h:" + str(self.h))
 
@@ -68,6 +73,7 @@ class BorderDraw(DrawCommand):
   def __init__(self, node):
     self.internal = node.dimension.get_padding_rect()
     self.external = node.dimension.get_border_rect()
+    self.color = Color(node.style.get("border-color", "black"))
 
 
   def draw(self, cr):
